@@ -9,19 +9,18 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-
-import junit.framework.TestCase;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.subethamail.wiser.Wiser;
 import org.subethamail.wiser.WiserMessage;
+
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import junit.framework.TestCase;
 
 /**
  * This class tests various aspects of the server for smtp compliance by using Wiser
@@ -225,7 +224,7 @@ public class WiserFailuresTest extends TestCase
 				transport.sendMessage(msg, InternetAddress.parse("dimiter.bakardjiev@musala.com", false));
 				assertEquals(2, this.server.getMessages().size());
 			}
-			catch (javax.mail.MessagingException me)
+			catch (MessagingException me)
 			{
 				me.printStackTrace();
 			}

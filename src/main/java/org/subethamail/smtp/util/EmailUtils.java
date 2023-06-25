@@ -1,7 +1,7 @@
 package org.subethamail.smtp.util;
 
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 
 /**
  * @author Jeff Schnitzer

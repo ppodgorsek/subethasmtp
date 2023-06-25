@@ -40,10 +40,7 @@ java -classpath lib/activation.jar:lib/junit-4.5.jar:lib/mail.jar:lib/slf4j-api-
   * Send an email using the created smtp connection.
   * You should see your email mime code displayed in the console output.
 
-```
-//-------------------------------------------------------------------
-//BasicSMTPServer.java
-//-------------------------------------------------------------------
+```java
 import org.subethamail.smtp.server.SMTPServer;
 
 public class BasicSMTPServer {
@@ -56,10 +53,7 @@ public class BasicSMTPServer {
 }
 ```
 
-```
-//-------------------------------------------------------------------
-//MyMessageHandlerFactory.java
-//-------------------------------------------------------------------
+```java
 import org.subethamail.smtp.*;
 
 import java.io.BufferedReader;
