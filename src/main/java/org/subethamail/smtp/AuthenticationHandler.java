@@ -6,7 +6,7 @@ package org.subethamail.smtp;
  * Since the authentication process can be stateful, an instance of this class can be stateful too.<br>
  * Do not share a single instance of this interface if you don't explicitly need to do so.
  *
- * @author Marco Trevisan <mrctrevisan@yahoo.it>
+ * @author <a href="mailto:mrctrevisan@yahoo.it">Marco Trevisan</a>
  * @author Jeff Schnitzer
  * @author Scott Hernandez
  */
@@ -14,7 +14,7 @@ public interface AuthenticationHandler
 {
 
 	/**
-	 * Initially called using an input string in the RFC2554 form: "AUTH <mechanism> [initial-response]". <br>
+	 * Initially called using an input string in the RFC2554 form: "{@literal AUTH <mechanism> [initial-response]}". <br>
 	 * This method must return text which will be delivered to the client, or null if the exchange
 	 * has been completed successfully.  If a response is provided to the client, this continues
 	 * the exchange - there will be another auth() call with the client's response.

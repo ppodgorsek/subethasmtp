@@ -41,11 +41,11 @@ public interface MessageContext
 	public String getHelo();
 
 	/**
-	 * Returns the identity of the peer which was established as part of the TLS handshake
-	 * as defined by {@link javax.net.ssl.SSLSession#getPeerCertificates()}.
-	 * <p/>
-	 * In order to get this information, override {@link SMTPServer#createSSLSocket(java.net.Socket)} and call
-	 * {@link javax.net.ssl.SSLSocket#setNeedClientAuth(boolean) setNeedClientAuth(true)} on the created socket.
+	 * <p>Returns the identity of the peer which was established as part of the TLS handshake
+	 * as defined by {@link javax.net.ssl.SSLSession#getPeerCertificates()}.</p>
+	 *
+	 * <p>In order to get this information, override {@link SMTPServer#createSSLSocket(java.net.Socket)} and call
+	 * {@link javax.net.ssl.SSLSocket#setNeedClientAuth(boolean) setNeedClientAuth(true)} on the created socket.</p>
 	 *
 	 * @return an ordered array of peer certificates, with the peer's own certificate first followed
 	 *         by any certificate authorities, or null when no such information is available

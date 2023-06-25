@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * The factory interface for creating authentication handlers.
  *
- * @author Marco Trevisan <mrctrevisan@yahoo.it>
+ * @author <a href="mailto:mrctrevisan@yahoo.it">Marco Trevisan</a>
  * @author Jeff Schnitzer
  */
 public interface AuthenticationHandlerFactory
