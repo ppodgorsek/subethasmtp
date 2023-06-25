@@ -46,7 +46,7 @@ public class Session implements Runnable, MessageContext
 	 * thread is the one which calls the constructor. MDC is usually inherited
 	 * by new threads, but this mechanism does not work with executors.
 	 */
-	private final Map<?, ?> parentLoggingMdcContext = MDC.getCopyOfContextMap();
+	private final Map<String, String> parentLoggingMdcContext = MDC.getCopyOfContextMap();
 	
 	/**
 	 * Uniquely identifies this session within an extended time period, useful

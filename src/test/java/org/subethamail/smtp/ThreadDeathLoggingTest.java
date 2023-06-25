@@ -5,8 +5,6 @@ import java.io.InputStream;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.subethamail.smtp.MessageHandlerFactory;
-import org.subethamail.smtp.TooMuchDataException;
 import org.subethamail.smtp.client.SMTPException;
 import org.subethamail.smtp.client.SmartClient;
 import org.subethamail.smtp.helper.SimpleMessageListener;

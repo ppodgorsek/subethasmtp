@@ -3,11 +3,9 @@ package org.subethamail.smtp.server;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.mail.MessagingException;
-
-import mockit.Expectations;
-import mockit.Mocked;
-
+import org.easymock.EasyMock;
+import org.easymock.EasyMockSupport;
+import org.easymock.Mock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,24 +17,30 @@ import org.subethamail.smtp.client.SMTPException;
 import org.subethamail.smtp.client.SmartClient;
 import org.subethamail.smtp.util.TextUtils;
 
+import jakarta.mail.MessagingException;
+
 /**
- * This class tests whether the event handler methods defined in MessageHandler 
- * are called at the appropriate times and in good order.  
+ * This class tests whether the event handler methods defined in MessageHandler
+ * are called at the appropriate times and in good order.
  */
 public class MessageHandlerTest {
-	@Mocked
+
+	@Mock
 	private MessageHandlerFactory messageHandlerFactory;
 
-	@Mocked
+	@Mock
 	private MessageHandler messageHandler;
 
-	@Mocked
+	@Mock
 	private MessageHandler messageHandler2;
 
 	private SMTPServer smtpServer;
 
 	@Before
 	public void setup() {
+
+		EasyMockSupport.injectMocks(this);
+
 		smtpServer = new SMTPServer(messageHandlerFactory);
 		smtpServer.setPort(2566);
 		smtpServer.start();
@@ -45,20 +49,24 @@ public class MessageHandlerTest {
 	@Test
 	public void testCompletedMailTransaction() throws Exception {
 
-		new Expectations() {
-			{
-				messageHandlerFactory.create((MessageContext) any);
-				result = messageHandler;
+		EasyMock.expect(messageHandlerFactory.create(EasyMock.anyObject(MessageContext.class)))
+				.andReturn(messageHandler);
 
-				messageHandler.from(anyString);
-				messageHandler.recipient(anyString);
-				messageHandler.data((InputStream) any);
-				messageHandler.done();
-			}
-		};
+		messageHandler.from(EasyMock.anyString());
+		EasyMock.expectLastCall();
 
-		SmartClient client = new SmartClient("localhost", smtpServer.getPort(),
-				"localhost");
+		messageHandler.recipient(EasyMock.anyString());
+		EasyMock.expectLastCall();
+
+		messageHandler.data(EasyMock.anyObject(InputStream.class));
+		EasyMock.expectLastCall();
+
+		messageHandler.done();
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(messageHandler, messageHandler2, messageHandlerFactory);
+
+		SmartClient client = new SmartClient("localhost", smtpServer.getPort(), "localhost");
 		client.from("john@example.com");
 		client.to("jane@example.com");
 		client.dataStart();
@@ -66,69 +74,80 @@ public class MessageHandlerTest {
 		client.dataEnd();
 		client.quit();
 		smtpServer.stop(); // wait for the server to catch up
+
+		EasyMock.verify(messageHandler, messageHandler2, messageHandlerFactory);
 	}
 
 	@Test
 	public void testDisconnectImmediately() throws Exception {
 
-		new Expectations() {
-			{
-				messageHandlerFactory.create((MessageContext) any);
-				times = 0;
-			}
-		};
+		EasyMock.replay(messageHandler, messageHandler2, messageHandlerFactory);
 
-		SmartClient client = new SmartClient("localhost", smtpServer.getPort(),
-				"localhost");
+		SmartClient client = new SmartClient("localhost", smtpServer.getPort(), "localhost");
 		client.quit();
 		smtpServer.stop(); // wait for the server to catch up
+
+		EasyMock.verify(messageHandler, messageHandler2, messageHandlerFactory);
 	}
 
 	@Test
 	public void testAbortedMailTransaction() throws Exception {
 
-		new Expectations() {
-			{
-				messageHandlerFactory.create((MessageContext) any);
-				result = messageHandler;
+		EasyMock.expect(messageHandlerFactory.create(EasyMock.anyObject(MessageContext.class)))
+				.andReturn(messageHandler);
 
-				messageHandler.from(anyString);
-				messageHandler.done();
-			}
-		};
+		messageHandler.from(EasyMock.anyString());
+		EasyMock.expectLastCall();
 
-		SmartClient client = new SmartClient("localhost", smtpServer.getPort(),
-				"localhost");
+		messageHandler.done();
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(messageHandler, messageHandler2, messageHandlerFactory);
+
+		SmartClient client = new SmartClient("localhost", smtpServer.getPort(), "localhost");
 		client.from("john@example.com");
 		client.quit();
 		smtpServer.stop(); // wait for the server to catch up
+
+		EasyMock.verify(messageHandler, messageHandler2, messageHandlerFactory);
 	}
 
 	@Test
 	public void testTwoMailsInOneSession() throws Exception {
 
-		new Expectations() {
-			{
-				messageHandlerFactory.create((MessageContext) any);
-				result = messageHandler;
+		EasyMock.expect(messageHandlerFactory.create(EasyMock.anyObject(MessageContext.class)))
+				.andReturn(messageHandler);
 
-				onInstance(messageHandler).from(anyString);
-				onInstance(messageHandler).recipient(anyString);
-				onInstance(messageHandler).data((InputStream) any);
-				onInstance(messageHandler).done();
+		messageHandler.from(EasyMock.anyString());
+		EasyMock.expectLastCall();
 
-				messageHandlerFactory.create((MessageContext) any);
-				result = messageHandler2;
+		messageHandler.recipient(EasyMock.anyString());
+		EasyMock.expectLastCall();
 
-				onInstance(messageHandler2).from(anyString);
-				onInstance(messageHandler2).recipient(anyString);
-				onInstance(messageHandler2).data((InputStream) any);
-				onInstance(messageHandler2).done();
-			}
-		};
+		messageHandler.data(EasyMock.anyObject(InputStream.class));
+		EasyMock.expectLastCall();
 
-		SmartClient client = new SmartClient("localhost", smtpServer.getPort(),
-				"localhost");
+		messageHandler.done();
+		EasyMock.expectLastCall();
+
+		EasyMock.expect(messageHandlerFactory.create(EasyMock.anyObject(MessageContext.class)))
+				.andReturn(messageHandler2);
+
+		messageHandler2.from(EasyMock.anyString());
+		EasyMock.expectLastCall();
+
+		messageHandler2.recipient(EasyMock.anyString());
+		EasyMock.expectLastCall();
+
+		messageHandler2.data(EasyMock.anyObject(InputStream.class));
+		EasyMock.expectLastCall();
+
+		messageHandler2.done();
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(messageHandler, messageHandler2, messageHandlerFactory);
+
+		SmartClient client = new SmartClient("localhost", smtpServer.getPort(), "localhost");
 
 		client.from("john1@example.com");
 		client.to("jane1@example.com");
@@ -145,35 +164,41 @@ public class MessageHandlerTest {
 		client.quit();
 
 		smtpServer.stop(); // wait for the server to catch up
+
+		EasyMock.verify(messageHandler, messageHandler2, messageHandlerFactory);
 	}
-	
+
 	/**
-	 * Test for issue 56: rejecting a Mail From causes IllegalStateException in
-	 * the next Mail From attempt.
-	 * @see <a href=http://code.google.com/p/subethasmtp/issues/detail?id=56>Issue 56</a>
+	 * Test for issue 56: rejecting a Mail From causes IllegalStateException in the
+	 * next Mail From attempt.
+	 * 
+	 * @see <a href=http://code.google.com/p/subethasmtp/issues/detail?id=56>Issue
+	 *      56</a>
 	 */
 	@Test
-	public void testMailFromRejectedFirst() throws IOException, MessagingException
-	{
-		new Expectations() {
-			{
-				messageHandlerFactory.create((MessageContext) any);
-				result = messageHandler;
+	public void testMailFromRejectedFirst() throws IOException, MessagingException {
 
-				onInstance(messageHandler).from(anyString);
-				result = new RejectException("Test MAIL FROM rejection");
-				onInstance(messageHandler).done();
+		EasyMock.expect(messageHandlerFactory.create(EasyMock.anyObject(MessageContext.class)))
+				.andReturn(messageHandler);
 
-				messageHandlerFactory.create((MessageContext) any);
-				result = messageHandler2;
+		messageHandler.from(EasyMock.anyString());
+		EasyMock.expectLastCall().andThrow(new RejectException("Test MAIL FROM rejection"));
 
-				onInstance(messageHandler2).from(anyString);
-				onInstance(messageHandler2).done();
-			}
-		};
+		messageHandler.done();
+		EasyMock.expectLastCall();
 
-		SmartClient client = new SmartClient("localhost", smtpServer.getPort(),
-				"localhost");
+		EasyMock.expect(messageHandlerFactory.create(EasyMock.anyObject(MessageContext.class)))
+				.andReturn(messageHandler2);
+
+		messageHandler2.from(EasyMock.anyString());
+		EasyMock.expectLastCall();
+
+		messageHandler2.done();
+		EasyMock.expectLastCall();
+
+		EasyMock.replay(messageHandler, messageHandler2, messageHandlerFactory);
+
+		SmartClient client = new SmartClient("localhost", smtpServer.getPort(), "localhost");
 
 		boolean expectedRejectReceived = false;
 		try {
@@ -182,12 +207,13 @@ public class MessageHandlerTest {
 			expectedRejectReceived = true;
 		}
 		Assert.assertTrue(expectedRejectReceived);
-		
+
 		client.from("john2@example.com");
 		client.quit();
 
 		smtpServer.stop(); // wait for the server to catch up
-		
+
+		EasyMock.verify(messageHandler, messageHandler2, messageHandlerFactory);
 	}
-	
+
 }

@@ -3,8 +3,8 @@ package org.subethamail.wiser;
 import java.io.ByteArrayInputStream;
 import java.io.PrintStream;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 /**
  * This class wraps a received message and provides
