@@ -8,9 +8,9 @@ import org.subethamail.smtp.server.SMTPServer;
 import org.subethamail.smtp.server.Session;
 
 /**
- * Provides a help <verb> system for people to interact with.
+ * Provides a help {@literal <verb>} system for people to interact with.
  *
- * @author Ian McFarland &lt;ian@neo.com&gt;
+ * @author <a href="mailto:ian@neo.com">Ian McFarland</a>
  * @author Jon Stevens
  * @author Scott Hernandez
  */

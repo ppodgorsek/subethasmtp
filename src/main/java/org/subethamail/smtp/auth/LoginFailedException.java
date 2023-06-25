@@ -3,7 +3,7 @@ package org.subethamail.smtp.auth;
 /**
  * Exception expected to be thrown by a validator (i.e UsernamePasswordValidator)
  *
- * @author Marco Trevisan <mrctrevisan@yahoo.it>
+ * @author <a href="mailto:mrctrevisan@yahoo.it">Marco Trevisan</a>
  */
 @SuppressWarnings("serial")
 public class LoginFailedException extends Exception

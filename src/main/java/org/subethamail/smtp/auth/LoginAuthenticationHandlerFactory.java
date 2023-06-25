@@ -26,8 +26,8 @@ import org.subethamail.smtp.util.TextUtils;
  *      LOGIN SASL Mechanism</a>
  * @see <a
  *      href="http://download.microsoft.com/download/5/d/d/5dd33fdf-91f5-496d-9884-0a0b0ee698bb/%5BMS-XLOGIN%5D.pdf">[MS-XLOGIN]</a>
- * 
- * @author Marco Trevisan <mrctrevisan@yahoo.it>
+ *
+ * @author <a href="mailto:mrctrevisan@yahoo.it">Marco Trevisan</a>
  * @author Jeff Schnitzer
  */
 public class LoginAuthenticationHandlerFactory implements AuthenticationHandlerFactory

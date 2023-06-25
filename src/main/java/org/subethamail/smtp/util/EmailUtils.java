@@ -34,7 +34,7 @@ public class EmailUtils
 	}
 
 	/**
-	 * Extracts the email address within a <> after a specified offset.
+	 * Extracts the email address within a {@literal <>} after a specified offset.
 	 */
 	public static String extractEmailAddress(String args, int offset)
 	{

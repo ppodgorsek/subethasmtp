@@ -6,18 +6,15 @@ import org.subethamail.smtp.server.BaseCommand;
 import org.subethamail.smtp.server.Session;
 
 /**
- * 
- * @author Michele Zuccala < zuccala.m@gmail.com >
+ * @author <a href="mailto:zuccala.m@gmail.com">Michele Zuccala</a>
  */
 public class ExpandCommand extends BaseCommand 
 {
-	/** */
 	public ExpandCommand() 
 	{
 		super("EXPN", "The expn command.");
 	}
 
-	/** */
 	@Override
 	public void execute(String commandString, Session sess) throws IOException 
 	{
